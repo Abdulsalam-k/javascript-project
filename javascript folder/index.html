@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Preview Card</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="page">
+    <div class="card">
+
+      <!-- Left: image -->
+      <div class="card__image">
+        <img src="drawers.jpg" alt="Furniture room">
+      </div>
+
+      <!-- Right: content -->
+      <div class="card__content">
+
+        <!-- Title -->
+        <h2 class="card__title">
+          Shift the overall look and feel by adding these wonderful touches to furniture in your home
+        </h2>
+
+        <!-- Description -->
+        <p class="card__desc">
+          Ever been in a room and felt like something was off? Perhaps it felt slightly bare and uninviting.
+          Simple tips to help you make any room feel complete.
+        </p>
+
+        <!-- Divider line -->
+        <hr class="card__divider">
+
+        <!-- Footer: author + share button -->
+        <div class="card__footer">
+
+          <!-- Author info -->
+          <div class="author">
+            <img src="avatar-michelle.jpg" alt="Michelle Appleton" class="author__avatar">
+            <div class="author__info">
+              <p class="author__name">Michelle Appleton</p>
+              <p class="author__date">28 Jun 2020</p>
+            </div>
+          </div>
+
+          <!-- Share button + tooltip -->
+          <div class="share__wrapper">
+
+            <!-- The tooltip popup (hidden by default) -->
+            <div class="share__tooltip" id="shareTooltip">
+              <span class="share__label">SHARE</span>
+              <a href="#" class="share__icon share__icon--facebook" aria-label="Share on Facebook">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="share__icon share__icon--twitter" aria-label="Share on Twitter">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="share__icon share__icon--pinterest" aria-label="Share on Pinterest">
+                <i class="fab fa-pinterest-p"></i>
+              </a>
+              <!-- Tooltip arrow pointing down -->
+              <div class="share__arrow"></div>
+            </div>
+
+            <!-- The share button -->
+            <button class="share__btn" id="shareBtn" aria-label="Share this article">
+              <i class="fas fa-share"></i>
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
