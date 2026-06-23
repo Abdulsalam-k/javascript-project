@@ -1,0 +1,314 @@
+/* Reset all default browser styles */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Root variables — colors and sizes in one place */
+:root {
+  --color-bg:        #ecf2f8;
+  --color-white:     #ffffff;
+  --color-dark:      #48556a;
+  --color-darker:    #6e8098;
+  --color-text:      #1a1a2e;
+  --color-muted:     #9daec2;
+  --color-tooltip:   #48556a;
+  --radius-card:     16px;
+  --radius-btn:      50%;
+  --shadow:          0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+/* Full page — light blue background, card centered */
+body {
+  font-family: 'Manrope', sans-serif;
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* The white card — image left, content right */
+.card {
+  display: flex;
+  flex-direction: row;
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  overflow: visible;
+  /* overflow: visible is important so the tooltip
+     is not cut off by the card edges */
+  max-width: 740px;
+  width: 100%;
+  box-shadow: var(--shadow);
+}
+
+/* Left image — takes up 45% of card width */
+.card__image {
+  flex: 0 0 45%;
+  /* flex: 0 0 45% means:
+     0 = do not grow
+     0 = do not shrink
+     45% = always stay at 45% width */
+  border-radius: var(--radius-card) 0 0 var(--radius-card);
+  /* rounds only the LEFT corners of the image
+     top-left, top-right, bottom-right, bottom-left */
+  overflow: hidden;
+}
+
+.card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* object-fit: cover fills the box
+     without stretching the image */
+  display: block;
+}
+
+/* Right side content */
+.card__content {
+  flex: 1;
+  padding: 2rem 2.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  /* gap: 1rem puts equal space between
+     every direct child element */
+}
+
+/* Article title */
+.card__title {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+/* Description text */
+.card__desc {
+  font-size: 0.85rem;
+  color: var(--color-darker);
+  line-height: 1.7;
+}
+
+/* Thin horizontal line separating content from footer */
+.card__divider {
+  border: none;
+  border-top: 1px solid #eceff4;
+  /* border: none removes default hr border
+     then we add only the top border */
+}
+
+/* Footer row — author on left, share button on right */
+.card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  /* position: relative is needed so the tooltip
+     (position: absolute) is positioned
+     relative to this footer */
+}
+
+/* Author section — avatar and text side by side */
+.author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Round profile picture */
+.author__avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Author name */
+.author__name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* Publish date */
+.author__date {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  margin-top: 2px;
+}
+
+/* Wrapper around tooltip + button
+   position: relative so tooltip positions
+   itself relative to this wrapper */
+.share__wrapper {
+  position: relative;
+}
+
+/* The circular share button */
+.share__btn {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-btn);
+  /* 50% makes it a perfect circle */
+  background: #eceff4;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-dark);
+  font-size: 14px;
+  transition: background 0.2s ease, color 0.2s ease;
+  /* transition makes color change smooth on hover */
+}
+
+/* Button turns dark when active */
+.share__btn.active {
+  background: var(--color-dark);
+  color: white;
+}
+
+.share__btn:hover {
+  background: var(--color-dark);
+  color: white;
+}
+
+/* ============================================
+   TOOLTIP — the share popup
+   
+   position: absolute = floats above the button,
+   does not affect layout of other elements.
+   
+   bottom: calc(100% + 14px) = places it
+   14px above the top of the share__wrapper.
+   
+   left: 50%, transform: translateX(-50%)
+   = centers it horizontally above the button.
+   
+   opacity: 0 = hidden by default.
+   pointer-events: none = not clickable when hidden.
+   
+   When .active class is added by JS:
+   opacity becomes 1 and it becomes clickable.
+   ============================================ */
+.share__tooltip {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-tooltip);
+  border-radius: 10px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+  /* white-space: nowrap keeps everything
+     on one line inside the tooltip */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  transform: translateX(-50%) translateY(6px);
+  /* starts slightly below, slides up when shown */
+  z-index: 10;
+}
+
+/* When JS adds .active class — tooltip becomes visible */
+.share__tooltip.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* SHARE text label inside tooltip */
+.share__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--color-muted);
+  text-transform: uppercase;
+}
+
+/* Social icon links inside tooltip */
+.share__icon {
+  color: white;
+  font-size: 16px;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.share__icon:hover {
+  transform: scale(1.2);
+  /* scale(1.2) = grows 20% bigger on hover */
+}
+
+/* The little downward pointing arrow
+   at the bottom of the tooltip bubble.
+   This is made using CSS borders trick —
+   no image needed. */
+.share__arrow {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid var(--color-tooltip);
+  /* The border trick:
+     left and right borders are transparent (invisible)
+     only the top border has color
+     this creates a downward pointing triangle */
+}
+
+/* ============================================
+   RESPONSIVE — tablet and mobile
+   ============================================ */
+@media (max-width: 620px) {
+  .card {
+    flex-direction: column;
+    /* stack image on top of content */
+    overflow: hidden;
+  }
+
+  .card__image {
+    flex: none;
+    width: 100%;
+    height: 200px;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    /* rounds only top corners when stacked */
+  }
+
+  .card__content {
+    padding: 1.5rem;
+  }
+
+  /* On mobile the tooltip goes full width
+     across the footer instead of floating above */
+  .share__tooltip {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+    justify-content: center;
+    transform: translateY(100%);
+    /* starts hidden below screen */
+  }
+
+  .share__tooltip.active {
+    transform: translateY(0);
+    /* slides up into view */
+  }
+
+  .share__arrow {
+    display: none;
+    /* hide arrow on mobile */
+  }
+}
